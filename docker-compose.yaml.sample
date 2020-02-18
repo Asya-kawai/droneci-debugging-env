@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  drone-server:
+    # Use latest version,
+    # Reference: https://hub.docker.com/r/drone/drone/tags
+    image: drone/drone:latest
+    ports:
+      - 8080:80
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # Don't change it.
+      - ./data:/data
+    restart: always
+    environment:
+      - DRONE_GITHUB_SERVER=https://github.com
+      - DRONE_GITHUB_CLIENT_ID=<Your github OAuth Apps client ID like as 1234567890abcdefghijklmn>
+      - DRONE_GITHUB_CLIENT_SECRET=<Your github Personal access tokens like as abcdefghijklmnoprqstuvwxyz1234567890>
+      - DRONE_RPC_SECRET=<Created by `openssl rand -hex 16`>
+      - DRONE_SERVER_HOST=<ngrok's endpoint(DNS name) like as 12345abc.ngrok.io> # set ngrok url like as `12345abc.ngrok.io`.
+      - DRONE_SERVER_PROTO=http # set `http` when use ngrok.
+      - DRONE_TLS_AUTOCERT=false # set `false` when use ngrok.
+
+  drone-agent:
+    image: drone/agent:latest
+    command: agent
+    restart: always
+    depends_on:
+      - drone-server
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - DRONE_RPC_SERVER=http://drone-server
+      - DRONE_RPC_SECRET=<Same as DRONE_RPC_SECRET>
+      - DRONE_RUNNER_CAPACITY=2
