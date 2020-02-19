@@ -38,7 +38,7 @@ refer https://docs.drone.io/server/provider/github/ .
 * Open Github page
 * Setup OAuth for DroneCI, refer `https://docs.drone.io/server/provider/github/`
   * Click avator and select `Settings > Developer settings > OAuth Apps`
-  * Set the dummy callback URL(like as `example.com`) in `Authorization callback URL` when use ngrok
+  * Set the dummy callback URL(such as `example.com`) in `Authorization callback URL` when use ngrok
   * Create a shared-secret(This secret keeps in your local disk or private git repositroy)
   * When setup done, you can get `Client ID` and `Client Secret`.  
     (`Client ID` and `Client Secret` set in DroenCI config.)
@@ -73,7 +73,7 @@ services:
       - DRONE_GITHUB_CLIENT_ID=<OAuth client ID>
       - DRONE_GITHUB_CLIENT_SECRET=<OAuth client secret>
       - DRONE_RPC_SECRET=<Created by `openssl rand -hex 16`>
-      - DRONE_SERVER_HOST=12345abc.ngrok.io # set ngrok url like as `12345abc.ngrok.io`.
+      - DRONE_SERVER_HOST=12345abc.ngrok.io # set ngrok url such as `12345abc.ngrok.io`.
       - DRONE_SERVER_PROTO=http # set `http` when use ngrok.
       - DRONE_TLS_AUTOCERT=false # set `false` when use ngrok.
 
@@ -145,31 +145,102 @@ curl localhost:8080/version
 {"version":"1.6.5"}
 ```
 
-# Access to DroneCI through ngrok
+## Access to DroneCI through ngrok
 
 Make sure accessable to DroneCI through ngrok.
 ```
 curl http://12345abc.ngrok.io/version
 {"version":"1.6.5"}
 ```
-# Fix OAuth config
+## Fix OAuth config
 
-We have set callback URL(like as `example.com`),
+We have set callback URL(such as `example.com`),
 then fix it correct URL(`12345abc.ngrok.io` showned by ngrok).
 
 * Open Github page
 * Click avator and select `Settings > Developer settings > OAuth Apps`
-* Set the currect callback URL(like as `12345abc.ngrok.io/login`) in `Authorization callback URL` when use ngrok 
+* Set the currect callback URL(such as `12345abc.ngrok.io/login`) in `Authorization callback URL` when use ngrok 
 
 *Note* Don't forget input `/login` into callback URL.
 
-# Authenticate DroneCI
+## Authenticate DroneCI
 
 Access to `http://12345abc.ngrok.io` from web browser.
 
 Click `Authorize <Your account name having OAuth token>`.
 
 After OAuth login, show DroneCI's UI in web browser.
+
+# Trouble shooting
+
+Encounter something wrong, check below topics.
+
+## DroneCI doesn't work
+
+### 1. Check docker-compose
+
+First, check status of DroneCI built by docker-compose.
+
+You can check status by this command.
+
+```
+# stop and start DroneCI
+docker-compose down
+docker-compose up -d
+# show logs
+docker-compose logs
+```
+
+When some error occurred, you should fix `docker-compose.yaml`.
+
+#### Check points:
+* services.volumes
+  * docker.sock mounts `/var/run/docker.sock:/var/run/docker.sock`
+  * docker is running? (When docker is stopping, `systemctl start docker`)
+* environment
+  * DRONE_GITHUB_SERVER
+  * DRONE_GITHUB_CLIENT_ID
+    * This ID is provied from github(This is `OAuth client ID`)
+  * DRONE_GITHUB_CLIENT_SECRET
+    * This ID is provied from github
+  * DRONE_PRC_SECRET
+    * Created by `openssl -hex 16`
+    * Set same one in `drone-agent.environment.DRONE_RPC_SECRET`
+  * DRONE_SERVER_HOST
+    * Set host name(DNS name) provideed from ngrok
+
+#### Test:
+Access to `localhost:8080/version`(command is `curl localhost:8080/version`).
+
+DroneCI works when returns version such as `{"version":"1.6.5"}`.
+
+### 2. Check ngrok
+
+If ngrok doesn't work, start ngrok `ngrok http 8080`.
+`8080` means host port that set in docker-compose's at `service.drone-server.port`.
+
+#### Test:
+Access to `<ngrok DNS name>/version`.(command is `curl <ngrok DNS name>/version`)
+
+DroneCI works when returns version such as `{"version":"1.6.5"}`.
+
+### 3. Check OAuth apps setting
+
+Check below parameters of github OAuth apps.
+
+* Client ID
+  * Set `DRONE_GITHUB_CLIENT_ID` to Client ID in `docker-compose.yaml`
+* Client Secret
+  * Set `DRONE_GITHUB_CLIENT_SECRET` to Client Secret in `docker-compose.yaml`
+* Check `Authorization callback URL`
+  * Check it is same ngrok DNS name + '/login'(`<ngrok DNS name>/login`)
+
+Finaly, access to `<ngrok DNS name>` and click `Authorize <Your account name having OAuth token>`.
+
+### 4. Avoid ngrok/Too many connection
+
+The ngrok's connection limit is 20.
+When encounterd this problem, wait over one minute and acess again.
 
 # Finaly
 
