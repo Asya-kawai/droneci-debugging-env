@@ -171,6 +171,13 @@ Click `Authorize <Your account name having OAuth token>`.
 
 After OAuth login, show DroneCI's UI in web browser.
 
+## Activate your application
+
+After authenticated, show repository list.
+
+Select an application to hook DroneCI and click `ACTIVATE` then
+creates webhook in repository of setting.
+
 # Trouble shooting
 
 Encounter something wrong, check below topics.
