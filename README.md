@@ -18,7 +18,7 @@ The reason of using ngrok is that Github OAuth needs callback URL
 
 Reference: https://ngrok.com/product
 
-### Download ngrok
+### Download and start ngrok
 
 refer https://ngrok.com/download .
 
