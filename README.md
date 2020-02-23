@@ -211,7 +211,7 @@ When some error occurred, you should fix `docker-compose.yaml`.
   * DRONE_GITHUB_CLIENT_SECRET
     * This ID is provied from github
   * DRONE_PRC_SECRET
-    * Created by `openssl -hex 16`
+    * Created by `openssl rand -hex 16`
     * Set same one in `drone-agent.environment.DRONE_RPC_SECRET`
   * DRONE_SERVER_HOST
     * Set host name(DNS name) provideed from ngrok
