@@ -75,7 +75,7 @@ services:
       - DRONE_GITHUB_CLIENT_ID=<OAuth client ID>
       - DRONE_GITHUB_CLIENT_SECRET=<OAuth client secret>
       - DRONE_RPC_SECRET=<Created by `openssl rand -hex 16`>
-      - DRONE_SERVER_HOST=12345abc.ngrok.io # set ngrok url such as `12345abc.ngrok.io`.
+      - DRONE_SERVER_HOST=12345abc.ngrok.io # set ngrok url such as `12345abc.ngrok.io`. show how to get ngrok url in below's note.
       - DRONE_SERVER_PROTO=http # set `http` when use ngrok.
       - DRONE_TLS_AUTOCERT=false # set `false` when use ngrok.
 
@@ -97,7 +97,7 @@ When customize paramters, refer `https://docs.drone.io/server/provider/github/`.
 
 #### Note
 
-When use ngrok, should get ngrok's host name accessable from intenet.
+When use ngrok, should get ngrok's host name accessable from the internet.
 
 Start ngrok(port: `8080`) and get DNS name.
 
