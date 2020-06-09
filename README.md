@@ -142,7 +142,10 @@ docker-compose ps
 ---------------------------------------------------------------------------------------
 droneci_drone-agent_1    /bin/drone-agent agent   Up                                   
 droneci_drone-server_1   /bin/drone-server        Up      443/tcp, 0.0.0.0:8080->80/tcp
+```
 
+Check DroneCI's version.
+```
 curl localhost:8080/version
 {"version":"1.6.5"}
 ```
