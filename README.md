@@ -16,6 +16,7 @@ ngrok is useful to get a tempolary DNS and callback URL for test.
 The reason of using ngrok is that Github OAuth needs callback URL
 (DroneCI requires OAuth).
 
+Download from: https://ngrok.com/download
 Reference: https://ngrok.com/product
 
 ### Download and start ngrok
