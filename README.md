@@ -38,8 +38,8 @@ refer https://docs.drone.io/server/provider/github/ .
 * Open Github page
 * Setup OAuth for DroneCI, refer `https://docs.drone.io/server/provider/github/`
   * Click avator and select `Settings > Developer settings > OAuth Apps`
-  * Set "droneci" to the application name
-  * Set "https://drone.io" to the homepage URL
+  * Set `droneci` to the application name
+  * Set `https://drone.io` to the homepage URL
   * Set the dummy callback URL(such as `example.com`) in `Authorization callback URL` when use ngrok
   * Create a shared-secret(This secret keeps in your local disk or private git repositroy)
   * When setup done, you can get `Client ID` and `Client Secret`.  
